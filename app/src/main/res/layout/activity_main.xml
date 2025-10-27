@@ -16,4 +16,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_architecture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Architecture Layers"
+        tools:layout_editor_absoluteX="157dp"
+        tools:layout_editor_absoluteY="272dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
