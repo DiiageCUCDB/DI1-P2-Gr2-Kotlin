@@ -1,1 +1,0 @@
-# DI1-P2-Gr2-Kotlin

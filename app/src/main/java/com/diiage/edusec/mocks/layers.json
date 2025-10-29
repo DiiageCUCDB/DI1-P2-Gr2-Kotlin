@@ -1,5 +1,0 @@
-[
-  { "name": "Domain Layer", "description": "Contains business logic and entities." },
-  { "name": "Data Layer", "description": "Handles repositories, APIs, and persistence." },
-  { "name": "Presentation Layer", "description": "Handles UI and user interaction." }
-]

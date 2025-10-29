@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "EduSec"
+rootProject.name = "edusec"
 include(":app")
  
