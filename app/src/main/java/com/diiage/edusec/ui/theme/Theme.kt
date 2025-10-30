@@ -10,27 +10,75 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Blue500,
+    onPrimary = White,
+    primaryContainer = Blue200,
+    onPrimaryContainer = Blue900,
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    secondary = Yellow500,
+    onSecondary = Neutral1000,
+    secondaryContainer = Yellow200,
+    onSecondaryContainer = Yellow900,
+
+    tertiary = Sky500,
+    onTertiary = Neutral1000,
+    tertiaryContainer = Sky200,
+    onTertiaryContainer = Sky900,
+
+    background = Neutral0,
+    onBackground = Neutral1000,
+
+    surface = Neutral100,
+    onSurface = Neutral1000,
+
+    surfaceVariant = Neutral200,
+    onSurfaceVariant = Neutral800,
+
+    outline = Neutral400,
+    outlineVariant = Neutral300,
+
+    error = Color(0xFFBA1A1A),
+    onError = White,
+    errorContainer = Color(0xFFFFDAD6),
+    onErrorContainer = Color(0xFF410002)
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = Blue700,
+    onPrimary = Neutral100,
+    primaryContainer = Blue800,
+    onPrimaryContainer = Blue200,
+
+    secondary = Yellow600,
+    onSecondary = Neutral1000,
+    secondaryContainer = Yellow800,
+    onSecondaryContainer = Yellow200,
+
+    tertiary = Sky600,
+    onTertiary = Neutral1000,
+    tertiaryContainer = Sky800,
+    onTertiaryContainer = Sky200,
+
+    background = Color(0xFF121212),
+    onBackground = Neutral100,
+
+    surface = Neutral900,
+    onSurface = Neutral100,
+
+    surfaceVariant = Neutral800,
+    onSurfaceVariant = Neutral400,
+
+    outline = Neutral700,
+    outlineVariant = Neutral800,
+
+    error = Color(0xFFFFB4AB),
+    onError = Color(0xFF690005),
+    errorContainer = Color(0xFF93000A),
+    onErrorContainer = Color(0xFFFFDAD6)
 )
 
 @Composable
@@ -52,7 +100,7 @@ fun EdusecTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = EdusecTypography,
         content = content
     )
 }
