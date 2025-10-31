@@ -1,15 +1,9 @@
 package com.diiage.edusec.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
 
 
@@ -36,7 +30,7 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Neutral1000,
 
     surfaceVariant = Neutral200,
-    onSurfaceVariant = Neutral800,
+    onSurfaceVariant = Neutral700, // Lighter gray for light theme
 
     outline = Neutral400,
     outlineVariant = Neutral300,
@@ -70,7 +64,7 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = Neutral100,
 
     surfaceVariant = Neutral800,
-    onSurfaceVariant = Neutral400,
+    onSurfaceVariant = Neutral400, // Lighter gray for dark theme
 
     outline = Neutral700,
     outlineVariant = Neutral800,
@@ -82,19 +76,13 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun EdusecTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+fun EduSecTheme(
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val useDarkTheme = ThemeManager.isDarkTheme()
 
-        darkTheme -> DarkColorScheme
+    val colorScheme = when {
+        useDarkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
