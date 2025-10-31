@@ -5,43 +5,51 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.diiage.edusec.ui.theme.EdusecTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.diiage.edusec.ui.home.HomeScreen
+import com.diiage.edusec.ui.login.LoginScreen
+import com.diiage.edusec.ui.splash.SplashScreen
+import com.diiage.edusec.ui.theme.EduSecTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EdusecTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            EduSecTheme {
+                EdusecApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun EdusecApp() {
+    val navController = rememberNavController()
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        EdusecNavHost(navController)
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    EdusecTheme {
-        Greeting("Android")
+fun EdusecNavHost(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = "splash"
+    ) {
+        composable("splash") { SplashScreen(navController) }
+        composable("login") { LoginScreen(navController) }
+        composable("home") { HomeScreen(navController) }
     }
 }
