@@ -36,17 +36,23 @@ jobs:
       run: |
         git remote add azure "https://azure:$AZURE_DEVOPS_TOKEN@dev.azure.com/2028-DI1-P2-E2/2028_DI1_P2_E2/_git/Kotlin"
 
+    - name: Add GitHub remote
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git remote add github "https://$GITHUB_TOKEN@github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin.git"
+
     - name: Fetch all remotes
       run: git fetch --all
 
     - name: Create local branches from new Azure DevOps branches
       run: |
-        # Loop through Azure branches except main
         for remote_branch in $(git branch -r | grep 'azure/' | grep -v 'azure/main' | sed 's|azure/||'); do
-          # If branch does not exist locally, create it
           if ! git show-ref --verify --quiet refs/heads/$remote_branch; then
             echo "Creating local branch $remote_branch from Azure"
             git checkout -b $remote_branch azure/$remote_branch
+            # Push new branch to GitHub
+            git push github HEAD:$remote_branch
           fi
         done
 
@@ -54,10 +60,9 @@ jobs:
       run: |
         for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/ | grep -v '^main$'); do
           echo "Syncing branch: $branch"
-
           git checkout $branch
 
-          # Check if branch exists on Azure
+          # Create branch on Azure if missing
           if ! git ls-remote --heads azure $branch | grep $branch; then
             echo "Branch $branch does not exist on Azure, creating..."
             git push azure HEAD:$branch
