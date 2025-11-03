@@ -39,7 +39,18 @@ jobs:
     - name: Fetch all remotes
       run: git fetch --all
 
-    - name: Sync all branches except main
+    - name: Create local branches from new Azure DevOps branches
+      run: |
+        # Loop through Azure branches except main
+        for remote_branch in $(git branch -r | grep 'azure/' | grep -v 'azure/main' | sed 's|azure/||'); do
+          # If branch does not exist locally, create it
+          if ! git show-ref --verify --quiet refs/heads/$remote_branch; then
+            echo "Creating local branch $remote_branch from Azure"
+            git checkout -b $remote_branch azure/$remote_branch
+          fi
+        done
+
+    - name: Sync all local branches to Azure
       run: |
         for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/ | grep -v '^main$'); do
           echo "Syncing branch: $branch"
