@@ -38,9 +38,9 @@ jobs:
 
     - name: Add GitHub remote
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
-        git remote add github "https://$GITHUB_TOKEN@github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin.git"
+        git remote add github "https://$GH_PAT@github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin.git"
 
     - name: Fetch all remotes
       run: git fetch --all
