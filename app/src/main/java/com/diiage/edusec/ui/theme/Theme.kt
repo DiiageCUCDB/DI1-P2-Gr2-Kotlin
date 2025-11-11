@@ -8,17 +8,17 @@ import androidx.compose.ui.graphics.Color
 
 
 private val LightColorScheme = lightColorScheme(
-    primary = Blue500,
+    primary = BlueDiiage,
     onPrimary = White,
     primaryContainer = Blue200,
     onPrimaryContainer = Blue900,
 
-    secondary = Yellow500,
+    secondary = YellowDiiage,
     onSecondary = Neutral1000,
     secondaryContainer = Yellow200,
     onSecondaryContainer = Yellow900,
 
-    tertiary = Sky500,
+    tertiary = SkyDiiage,
     onTertiary = Neutral1000,
     tertiaryContainer = Sky200,
     onTertiaryContainer = Sky900,
@@ -29,8 +29,8 @@ private val LightColorScheme = lightColorScheme(
     surface = Neutral100,
     onSurface = Neutral1000,
 
-    surfaceVariant = Neutral200,
-    onSurfaceVariant = Neutral700, // Lighter gray for light theme
+    surfaceVariant = Neutral400,
+    onSurfaceVariant = Neutral800, // Lighter gray for light theme
 
     outline = Neutral400,
     outlineVariant = Neutral300,
@@ -41,18 +41,18 @@ private val LightColorScheme = lightColorScheme(
     onErrorContainer = Color(0xFF410002)
 )
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Blue700,
+val DarkColorScheme = darkColorScheme(
+    primary = BlueDiiage,
     onPrimary = Neutral100,
     primaryContainer = Blue800,
     onPrimaryContainer = Blue200,
 
-    secondary = Yellow600,
+    secondary = YellowDiiage,
     onSecondary = Neutral1000,
     secondaryContainer = Yellow800,
     onSecondaryContainer = Yellow200,
 
-    tertiary = Sky600,
+    tertiary = SkyDiiage,
     onTertiary = Neutral1000,
     tertiaryContainer = Sky800,
     onTertiaryContainer = Sky200,

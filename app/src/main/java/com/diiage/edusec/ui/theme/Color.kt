@@ -66,3 +66,7 @@ val Sky800 = Color(0xFF135AE9)
 val Sky900 = Color(0xFF0049E5)
 val Sky1000 = Color(0xFF0038B5)
 val SkyDiiage = Color(0xFF9ACBFD)
+
+val Facile = Color(0xFF4CAF50) // Green
+val Moyen = Color(0xFFFFC107) // Amber
+val Difficile = Color(0xFFF44336) // Red
