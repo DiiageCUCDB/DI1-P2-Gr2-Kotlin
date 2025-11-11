@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.diiage.edusec.ui.home.HomeScreen
 import com.diiage.edusec.ui.login.LoginScreen
 import com.diiage.edusec.ui.splash.SplashScreen
+import com.diiage.edusec.ui.test.ComponentsTestScreen
 import com.diiage.edusec.ui.theme.EduSecTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,5 +52,6 @@ fun EdusecNavHost(navController: NavHostController) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen(navController) }
         composable("home") { HomeScreen(navController) }
+        composable("components_test") { ComponentsTestScreen(navController) }
     }
 }
