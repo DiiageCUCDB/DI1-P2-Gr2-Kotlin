@@ -14,9 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.diiage.edusec.ui.components.input.PrimaryButton
 import com.diiage.edusec.ui.components.input.ThemeSwitcher
-import com.diiage.edusec.ui.components.layout.CenteredBox
-import com.diiage.edusec.ui.components.layout.CenteredColumn
-import com.diiage.edusec.ui.components.layout.ExtraLargeSpacer
+import com.diiage.edusec.ui.components.layout.*
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -40,6 +38,15 @@ fun HomeScreen(navController: NavController) {
             )
 
             ExtraLargeSpacer()
+
+            PrimaryButton(
+                onClick = {
+                    navController.navigate("components_test")
+                },
+                text = "Tester les Composants"
+            )
+
+            MediumSpacer()
 
             PrimaryButton(
                 onClick = {
