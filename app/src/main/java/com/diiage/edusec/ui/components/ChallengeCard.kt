@@ -63,7 +63,7 @@ fun ChallengeCard(
 
     // Determine mode text and icon based on isEquipe boolean
     val modeInfo = if (isEquipe) {
-        ModeInfo("Équipe", R.drawable.users)
+        ModeInfo("Équipe", R.drawable.users_outline)
     } else {
         ModeInfo("Solo", R.drawable.user)
     }

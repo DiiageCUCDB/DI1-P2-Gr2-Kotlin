@@ -6,23 +6,37 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.diiage.edusec.data.api.LoginApiService
+import com.diiage.edusec.data.repository.LoginRepository
+import com.diiage.edusec.service.bl.LoginService
 import com.diiage.edusec.ui.components.input.PrimaryButton
 import com.diiage.edusec.ui.components.input.PrimaryTextField
 import com.diiage.edusec.ui.components.layout.*
 import com.diiage.edusec.ui.theme.EduSecTheme
 import com.diiage.edusec.ui.theme.YellowDiiage
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavController) {
     var identifier by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    // In a real app, you'd get this from dependency injection
+    val loginService = remember {
+        // For demo purposes - in real app use dependency injection
+        val mockApiService = createMockApiService()
+        val repository = LoginRepository(mockApiService)
+        LoginService(repository)
+    }
 
     CenteredBox {
         CenteredColumn {
@@ -57,11 +71,27 @@ fun LoginScreen(navController: NavController) {
 
             LargeSpacer()
 
+            // Error message
+            errorMessage?.let { message ->
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                SmallSpacer()
+            }
+
             // Input Field
             PrimaryTextField(
                 value = identifier,
-                onValueChange = { identifier = it },
-                label = "Identifiant"
+                onValueChange = {
+                    identifier = it
+                    errorMessage = null // Clear error when user types
+                },
+                label = "Identifiant",
+                enabled = !isLoading
             )
 
             LargeSpacer()
@@ -69,12 +99,32 @@ fun LoginScreen(navController: NavController) {
             // Continue Button
             PrimaryButton(
                 onClick = {
-                    if (identifier.isNotBlank()) {
-                        navController.navigate("home")
+                    coroutineScope.launch {
+                        isLoading = true
+                        errorMessage = null
+
+                        // Validate locally first
+                        val validationError = loginService.getErrorMessage(identifier)
+                        if (validationError != null) {
+                            errorMessage = validationError
+                            isLoading = false
+                            return@launch
+                        }
+
+                        // Call API
+                        val result = loginService.login(identifier)
+                        isLoading = false
+
+                        result.onSuccess { response ->
+                            navController.navigate("home")
+                        }.onFailure { error ->
+                            errorMessage = error.message ?: "Erreur de connexion"
+                        }
                     }
                 },
-                text = "Continuer",
-                enabled = identifier.isNotBlank()
+                text = if (isLoading) "Connexion..." else "Continuer",
+                enabled = loginService.validateIdentifier(identifier) && !isLoading,
+                isLoading = isLoading
             )
 
             MediumSpacer()
@@ -91,10 +141,32 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
+// Mock API service for preview/demo
+private fun createMockApiService(): LoginApiService {
+    return object : LoginApiService {
+        override suspend fun login(loginRequest: com.diiage.edusec.model.LoginRequest): com.diiage.edusec.model.LoginResponse {
+            // Simulate API call delay
+            kotlinx.coroutines.delay(1000)
+            return if (loginRequest.identifier == "error") {
+                com.diiage.edusec.model.LoginResponse(success = false, error = "Identifiant invalide")
+            } else {
+                com.diiage.edusec.model.LoginResponse(success = true, userId = "user_${loginRequest.identifier}")
+            }
+        }
+    }
+}
+
 // Preview-only version without navigation
 @Composable
 fun LoginScreenPreviewContent() {
     var identifier by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    val loginService = remember {
+        val mockApiService = createMockApiService()
+        val repository = LoginRepository(mockApiService)
+        LoginService(repository)
+    }
 
     CenteredBox {
         CenteredColumn {
@@ -129,6 +201,18 @@ fun LoginScreenPreviewContent() {
 
             LargeSpacer()
 
+            // Error message
+            errorMessage?.let { message ->
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                SmallSpacer()
+            }
+
             // Input Field
             PrimaryTextField(
                 value = identifier,
@@ -142,7 +226,7 @@ fun LoginScreenPreviewContent() {
             PrimaryButton(
                 onClick = { /* Do nothing in preview */ },
                 text = "Continuer",
-                enabled = identifier.isNotBlank()
+                enabled = loginService.validateIdentifier(identifier)
             )
 
             MediumSpacer()
@@ -168,8 +252,6 @@ fun LoginScreenPreview_Empty() {
         }
     }
 }
-
-
 
 @Preview(showBackground = true, name = "Dark - Button Enabled", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable

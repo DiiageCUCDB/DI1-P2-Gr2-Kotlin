@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ fun PrimaryButton(
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     fontWeight: FontWeight = FontWeight.Medium,
     variant: ButtonVariant = ButtonVariant.PRIMARY
 ) {
@@ -56,7 +59,7 @@ fun PrimaryButton(
         }
         ButtonVariant.SUCCESS -> {
             Quadruple(
-                MaterialTheme.colorScheme.primaryContainer, // ou une couleur de succès personnalisée
+                MaterialTheme.colorScheme.primaryContainer,
                 MaterialTheme.colorScheme.onPrimaryContainer,
                 MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
                 MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.5f)
@@ -83,9 +86,17 @@ fun PrimaryButton(
             disabledContainerColor = disabledContainerColor,
             disabledContentColor = disabledContentColor
         ),
-        enabled = enabled
+        enabled = enabled && !isLoading
     ) {
-        Text(text, fontWeight = fontWeight)
+        if (isLoading) {
+            CircularProgressIndicator(
+                color = contentColor,
+                strokeWidth = 2.dp,
+                modifier = Modifier.size(20.dp)
+            )
+        } else {
+            Text(text, fontWeight = fontWeight)
+        }
     }
 }
 
@@ -135,6 +146,55 @@ fun PrimaryButtonPreview_AllVariants() {
                     onClick = { /* Do nothing in preview */ },
                     text = "Bouton Erreur",
                     variant = ButtonVariant.ERROR
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Light - Loading States")
+@Composable
+fun PrimaryButtonPreview_LoadingStates() {
+    EduSecTheme {
+        Surface {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Primary - Loading:", style = MaterialTheme.typography.labelMedium)
+                PrimaryButton(
+                    onClick = { /* Do nothing in preview */ },
+                    text = "Connexion...",
+                    isLoading = true,
+                    variant = ButtonVariant.PRIMARY
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("Success - Loading:", style = MaterialTheme.typography.labelMedium)
+                PrimaryButton(
+                    onClick = { /* Do nothing in preview */ },
+                    text = "Enregistrement...",
+                    isLoading = true,
+                    variant = ButtonVariant.SUCCESS
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("Error - Loading:", style = MaterialTheme.typography.labelMedium)
+                PrimaryButton(
+                    onClick = { /* Do nothing in preview */ },
+                    text = "Suppression...",
+                    isLoading = true,
+                    variant = ButtonVariant.ERROR
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("Disabled while Loading:", style = MaterialTheme.typography.labelMedium)
+                PrimaryButton(
+                    onClick = { /* Do nothing in preview */ },
+                    text = "Chargement...",
+                    enabled = false,
+                    isLoading = true,
+                    variant = ButtonVariant.PRIMARY
                 )
             }
         }

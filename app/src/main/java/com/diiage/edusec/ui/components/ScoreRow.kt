@@ -66,7 +66,7 @@ fun ScoreRow(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Image(
-                painter = painterResource(com.diiage.edusec.R.drawable.trophy),
+                painter = painterResource(com.diiage.edusec.R.drawable.trophy_outline),
                 contentDescription = "Score",
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary)
             )

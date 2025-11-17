@@ -13,8 +13,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.diiage.edusec.ui.challenges.ChallengesScreen
+import com.diiage.edusec.ui.edusec.EduSecScreen
+import com.diiage.edusec.ui.guild.GuildScreen
 import com.diiage.edusec.ui.home.HomeScreen
 import com.diiage.edusec.ui.login.LoginScreen
+import com.diiage.edusec.ui.settings.SettingsScreen
 import com.diiage.edusec.ui.splash.SplashScreen
 import com.diiage.edusec.ui.test.ComponentsTestScreen
 import com.diiage.edusec.ui.theme.EduSecTheme
@@ -53,5 +57,9 @@ fun EdusecNavHost(navController: NavHostController) {
         composable("login") { LoginScreen(navController) }
         composable("home") { HomeScreen(navController) }
         composable("components_test") { ComponentsTestScreen(navController) }
+        composable("guild") { GuildScreen(navController) }
+        composable("edusec") { EduSecScreen(navController) }
+        composable("challenges") { ChallengesScreen(navController) }
+        composable("settings") { SettingsScreen(navController) }
     }
 }
