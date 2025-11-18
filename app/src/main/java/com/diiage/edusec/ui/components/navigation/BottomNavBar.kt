@@ -35,8 +35,8 @@ data class NavItem(
 val bottomNavItems = listOf(
     NavItem(R.drawable.house_outline, R.drawable.house_filled, "home", "Accueil"),
     NavItem(R.drawable.users_outline, R.drawable.users_filled, "guild", "Guild"),
-    NavItem(R.drawable.swords_outline, R.drawable.swords_filled, "edusec", "EduSec", true), // Icône spéciale
-    NavItem(R.drawable.trophy_outline, R.drawable.trophy_filled, "challenges", "Challenges"),
+    NavItem(R.drawable.swords_outline, R.drawable.swords_filled, "challenges", "Challenges", true), // Icône spéciale
+    NavItem(R.drawable.trophy_outline, R.drawable.trophy_filled, "edusec", "EduSec"),
     NavItem(R.drawable.settings_outline, R.drawable.settings_filled, "settings", "Paramètres")
 )
 

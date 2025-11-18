@@ -1,8 +1,8 @@
 package com.diiage.edusec.data.repository
 
 import com.diiage.edusec.data.api.LoginApiService
-import com.diiage.edusec.model.LoginRequest
-import com.diiage.edusec.model.LoginResponse
+import com.diiage.edusec.domain.model.LoginRequest
+import com.diiage.edusec.domain.model.LoginResponse
 
 class LoginRepository(private val apiService: LoginApiService) {
     suspend fun login(identifier: String): LoginResponse {

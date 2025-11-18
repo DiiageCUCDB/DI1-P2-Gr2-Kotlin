@@ -30,7 +30,7 @@ fun MainScaffold(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
+                    .padding(top = innerPadding.calculateTopPadding())
             ) {
                 content(innerPadding)
             }

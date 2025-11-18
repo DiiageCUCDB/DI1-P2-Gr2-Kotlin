@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.diiage.edusec.data.api.LoginApiService
 import com.diiage.edusec.data.repository.LoginRepository
+import com.diiage.edusec.domain.model.LoginRequest
+import com.diiage.edusec.domain.model.LoginResponse
 import com.diiage.edusec.service.bl.LoginService
 import com.diiage.edusec.ui.components.input.PrimaryButton
 import com.diiage.edusec.ui.components.input.PrimaryTextField
@@ -144,13 +146,13 @@ fun LoginScreen(navController: NavController) {
 // Mock API service for preview/demo
 private fun createMockApiService(): LoginApiService {
     return object : LoginApiService {
-        override suspend fun login(loginRequest: com.diiage.edusec.model.LoginRequest): com.diiage.edusec.model.LoginResponse {
+        override suspend fun login(loginRequest: LoginRequest): LoginResponse {
             // Simulate API call delay
             kotlinx.coroutines.delay(1000)
             return if (loginRequest.identifier == "error") {
-                com.diiage.edusec.model.LoginResponse(success = false, error = "Identifiant invalide")
+                LoginResponse(success = false, error = "Identifiant invalide")
             } else {
-                com.diiage.edusec.model.LoginResponse(success = true, userId = "user_${loginRequest.identifier}")
+                LoginResponse(success = true, userId = "user_${loginRequest.identifier}")
             }
         }
     }

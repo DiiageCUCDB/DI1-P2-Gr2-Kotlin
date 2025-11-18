@@ -36,7 +36,6 @@ import com.diiage.edusec.ui.theme.EduSecTheme
  * @param onToggle Callback when toggle state changes
  * @param modifier Modifier for the component
  * @param enabled Whether the toggle is enabled
- * @param showLabels Whether to show labels for each state
  */
 @Composable
 fun PrimarySecondaryToggle(
@@ -44,8 +43,7 @@ fun PrimarySecondaryToggle(
     onToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    showLabels: Boolean = true
-) {
+    ) {
     val trackWidth = 52.dp
     val thumbSize = 24.dp
     val padding = 2.dp
@@ -86,21 +84,6 @@ fun PrimarySecondaryToggle(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (showLabels) {
-            Text(
-                text = "Primaire",
-                style = MaterialTheme.typography.labelMedium,
-                color = if (isPrimarySelected && enabled) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = if (enabled) 0.6f else 0.3f
-                    )
-                }
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-        }
-
         Box(
             modifier = Modifier
                 .width(trackWidth)
@@ -122,21 +105,6 @@ fun PrimarySecondaryToggle(
                     .offset(x = thumbOffset)
             )
         }
-
-        if (showLabels) {
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = "Secondaire",
-                style = MaterialTheme.typography.labelMedium,
-                color = if (!isPrimarySelected && enabled) {
-                    MaterialTheme.colorScheme.secondary
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = if (enabled) 0.6f else 0.3f
-                    )
-                }
-            )
-        }
     }
 }
 
@@ -147,7 +115,6 @@ fun PrimarySecondaryToggleVariant(
     onToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    showLabels: Boolean = true
 ) {
     val trackWidth = 52.dp
     val thumbSize = 24.dp
@@ -188,21 +155,6 @@ fun PrimarySecondaryToggleVariant(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (showLabels) {
-            Text(
-                text = "Primaire",
-                style = MaterialTheme.typography.labelMedium,
-                color = if (isPrimarySelected && enabled) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = if (enabled) 0.6f else 0.3f
-                    )
-                }
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-        }
-
         Box(
             modifier = Modifier
                 .width(trackWidth)
@@ -222,21 +174,6 @@ fun PrimarySecondaryToggleVariant(
                     .shadow(2.dp, CircleShape)
                     .align(Alignment.CenterStart)
                     .offset(x = thumbOffset)
-            )
-        }
-
-        if (showLabels) {
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = "Secondaire",
-                style = MaterialTheme.typography.labelMedium,
-                color = if (!isPrimarySelected && enabled) {
-                    MaterialTheme.colorScheme.secondary
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = if (enabled) 0.6f else 0.3f
-                    )
-                }
             )
         }
     }

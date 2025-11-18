@@ -1,4 +1,4 @@
-package com.diiage.edusec.model
+package com.diiage.edusec.domain.model
 
 data class LoginRequest(
     val identifier: String

@@ -1,7 +1,7 @@
 package com.diiage.edusec.service.bl
 
 import com.diiage.edusec.data.repository.LoginRepository
-import com.diiage.edusec.model.LoginResponse
+import com.diiage.edusec.domain.model.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
