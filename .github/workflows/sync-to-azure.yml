@@ -1,0 +1,110 @@
+name: Bidirectional Sync GitHub ↔ Azure DevOps
+
+on:
+  push:
+    branches-ignore:
+      - main
+  schedule:
+    # Sync from Azure every 24 hours
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+env:
+  AZURE_REPO_URL: "https://dev.azure.com/2028-DI1-P2-E2/2028_DI1_P2_E2/_git/Kotlin"
+
+jobs:
+  sync_to_azure:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout all branches
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Git configuration
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "github-actions-bot@users.noreply.github.com"
+
+    - name: Add Azure DevOps remote
+      env:
+        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+      run: |
+        git remote add azure "$AZURE_REPO_URL"
+        git config --local http.https://dev.azure.com/.extraheader "AUTHORIZATION: bearer $AZURE_DEVOPS_TOKEN"
+
+    - name: Sync all branches to Azure (except main)
+      env:
+        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+      run: |
+        # Get all local branches except main
+        branches=$(git branch -r | grep -v '\->' | grep -v 'main' | sed 's/origin\///' | tr -d ' ')
+        
+        for branch in $branches; do
+          echo "Syncing branch to Azure: $branch"
+          
+          # Checkout the branch
+          git checkout $branch
+          
+          # Push to Azure (creates branch if not exists)
+          git push azure $branch || echo "Failed to push $branch, continuing..."
+        done
+        
+        echo "Completed syncing all branches to Azure DevOps"
+
+  sync_from_azure:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Git configuration
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "github-actions-bot@users.noreply.github.com"
+
+    - name: Add Azure DevOps remote
+      env:
+        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+      run: |
+        git remote add azure "$AZURE_REPO_URL"
+        git config --local http.https://dev.azure.com/.extraheader "AUTHORIZATION: bearer $AZURE_DEVOPS_TOKEN"
+
+    - name: Fetch from Azure DevOps
+      run: |
+        git fetch azure
+
+    - name: Sync all branches from Azure (except main)
+      env:
+        AZURE_DEVOPS_TOKEN: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+      run: |
+        # Get all Azure branches except main
+        azure_branches=$(git branch -r | grep 'azure/' | grep -v 'main$' | grep -v 'HEAD' | sed 's/azure\///' | tr -d ' ')
+        
+        for branch in $azure_branches; do
+          echo "Syncing branch from Azure: $branch"
+          
+          # Check if branch exists locally
+          if git show-ref --verify --quiet "refs/heads/$branch"; then
+            echo "Branch $branch exists locally, updating..."
+            git checkout $branch
+            # Merge changes from Azure
+            git merge --no-edit --no-ff "azure/$branch" || echo "Merge completed for $branch"
+          else
+            echo "Creating new branch: $branch from Azure"
+            git checkout -b $branch "azure/$branch"
+          fi
+          
+          # Push to GitHub
+          git push origin $branch || echo "Failed to push $branch to GitHub, continuing..."
+        done
+        
+        echo "Completed syncing all branches from Azure DevOps to GitHub"
