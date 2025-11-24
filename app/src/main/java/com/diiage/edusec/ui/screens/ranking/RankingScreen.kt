@@ -16,37 +16,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.diiage.edusec.domain.mock.mockRankingTeams
+import com.diiage.edusec.domain.mock.mockRankingUsers
 import com.diiage.edusec.ui.core.components.CustomTitle
 import com.diiage.edusec.ui.core.components.input.ToggleElementButton
-import com.diiage.edusec.ui.core.components.layout.CenteredBox
 import com.diiage.edusec.ui.core.components.layout.CenteredColumn
-import com.diiage.edusec.ui.core.components.layout.DisplayRanking
+import com.diiage.edusec.ui.core.components.DisplayRanking
 import com.diiage.edusec.ui.core.components.layout.MainScaffold
 
 @Composable
 fun RankingScreen(navController: NavController) {
     var value by remember { mutableStateOf("Utilisateur") }
+    val users = mockRankingUsers()
+    val teams = mockRankingTeams()
+
 
     MainScaffold(navController = navController) {
-        CenteredBox(modifier = Modifier
-            .padding(it)
-            .fillMaxWidth()
+        CenteredColumn(
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .fillMaxWidth()
         ) {
-            CenteredColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
+            CustomTitle("Ranking")
+            ToggleElementButton("Utilisateur", "Équipe", value, { value = it })
+
+            Spacer(modifier = Modifier.size(15.dp))
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                CustomTitle("Ranking")
-                ToggleElementButton("Utilisateur", "Équipe", value, { value = it })
-
-                Spacer(modifier = Modifier.size(15.dp))
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    DisplayRanking(if (value == "Utilisateur") true else false)
-                }
-
+                    DisplayRanking(if (value == "Utilisateur") true else false, users, teams)
             }
         }
     }

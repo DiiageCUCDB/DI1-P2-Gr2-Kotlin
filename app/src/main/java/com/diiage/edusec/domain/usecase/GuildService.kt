@@ -1,4 +1,4 @@
-package com.diiage.edusec.domain.service
+package com.diiage.edusec.domain.usecase
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

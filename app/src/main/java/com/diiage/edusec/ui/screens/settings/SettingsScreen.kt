@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.diiage.edusec.ui.core.components.CustomTitle
 import com.diiage.edusec.ui.core.components.input.PrimarySecondaryToggle
 import com.diiage.edusec.ui.core.components.input.ThemeSwitcher
 import com.diiage.edusec.ui.core.components.layout.MainScaffold
@@ -31,13 +32,7 @@ fun SettingsScreen(navController: NavController) {
 
     MainScaffold(navController = navController) { _ ->
         Column {
-            Text(
-                text = "Paramètres",
-                style = MaterialTheme.typography.displayLarge,
-                fontSize = 52.sp,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+            CustomTitle("Paramètres")
 
             Spacer(modifier = Modifier.height(32.dp))
 

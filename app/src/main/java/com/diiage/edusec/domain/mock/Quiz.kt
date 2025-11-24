@@ -34,7 +34,7 @@ val mockQuestionsByChallenge: Map<String, List<QuizQuestion>> =
 
             QuizQuestion(
                 id = "q-${challenge.id}-$index",
-                challengeId = challenge.id,
+//                challengeId = challenge.id,
                 questionText = questionText,
                 answers = listOf(
                     QuizAnswer(

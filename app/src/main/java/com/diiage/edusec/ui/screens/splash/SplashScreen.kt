@@ -13,6 +13,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.diiage.edusec.ui.core.Destination
+import com.diiage.edusec.ui.core.navigate
 import com.diiage.edusec.ui.core.theme.EduSecTheme
 import com.diiage.edusec.ui.core.theme.YellowDiiage
 import kotlinx.coroutines.delay
@@ -21,9 +23,7 @@ import kotlinx.coroutines.delay
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(true) {
         delay(2000) // 2 seconds splash duration
-        navController.navigate("login") {
-            popUpTo("splash") { inclusive = true }
-        }
+        navController.navigate(Destination.Home)
     }
 
     Box(

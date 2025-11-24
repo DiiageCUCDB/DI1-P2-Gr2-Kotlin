@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.diiage.edusec.R
-import com.diiage.edusec.domain.service.GuildService
+import com.diiage.edusec.domain.usecase.GuildService
 import com.diiage.edusec.ui.core.components.CustomTitle
 import com.diiage.edusec.ui.core.components.GroupItem
 import com.diiage.edusec.ui.core.components.input.ButtonVariant
@@ -55,7 +55,6 @@ fun GuildScreen(navController: NavController) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
-                    .padding(bottom = 108.dp)
                     .padding(horizontal = 16.dp)
                     .fillMaxSize()
                     .verticalScroll(scrollState)

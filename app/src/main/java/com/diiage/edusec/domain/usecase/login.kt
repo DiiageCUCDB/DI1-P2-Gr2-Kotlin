@@ -1,4 +1,4 @@
-package com.diiage.edusec.domain.service
+package com.diiage.edusec.domain.usecase
 
 import com.diiage.edusec.data.remote.LoginRepository
 import com.diiage.edusec.domain.model.LoginResponse

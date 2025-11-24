@@ -16,11 +16,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.diiage.edusec.domain.mock.mockChallenges
+import com.diiage.edusec.ui.core.Destination
 import com.diiage.edusec.ui.core.components.ChallengeCard
+import com.diiage.edusec.ui.core.components.CustomTitle
 import com.diiage.edusec.ui.core.components.input.DifficultyFilter
 import com.diiage.edusec.ui.core.components.input.DifficultyLevel
 import com.diiage.edusec.ui.core.components.input.SearchBar
 import com.diiage.edusec.ui.core.components.layout.MainScaffold
+import com.diiage.edusec.ui.core.navigate
 import java.time.LocalDate
 import java.util.*
 
@@ -37,13 +40,7 @@ fun ChallengesScreen(navController: NavController) {
                 .padding()
                 .fillMaxSize()
         ) {
-            Text(
-                text = "Challenges",
-                style = MaterialTheme.typography.displayLarge,
-                fontSize = 52.sp,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+            CustomTitle("Challenges")
 
             // Search bar
             SearchBar(
@@ -129,7 +126,7 @@ fun ChallengesScreen(navController: NavController) {
                         },
                         isEquipe = challenge.isGuildChallenge,
                         onClick = {
-                            navController.navigate("quiz/${challenge.id}")
+                            navController.navigate(Destination.Quiz(challenge.id))
                         }
                     )
 

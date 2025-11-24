@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.diiage.edusec.domain.service.LoginService
+import com.diiage.edusec.domain.usecase.LoginService
 import com.diiage.edusec.ui.core.components.input.PrimaryButton
 import com.diiage.edusec.ui.core.components.input.PrimaryTextField
 import com.diiage.edusec.ui.core.components.layout.CenteredBox
