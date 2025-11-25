@@ -5,27 +5,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.diiage.edusec.ui.core.Destination
-import com.diiage.edusec.ui.core.navigate
+import com.diiage.edusec.ui.core.components.Screen
 import com.diiage.edusec.ui.core.theme.EduSecTheme
 import com.diiage.edusec.ui.core.theme.YellowDiiage
-import kotlinx.coroutines.delay
+import androidx.compose.runtime.Composable
 
 @Composable
 fun SplashScreen(navController: NavController) {
-    LaunchedEffect(true) {
-        delay(2000) // 2 seconds splash duration
-        navController.navigate(Destination.Home)
+    Screen(
+        viewModel = viewModel<SplashViewModel>(),
+        navController = navController
+    ) { _, _ ->
+        Content()
     }
+}
 
+@Composable
+private fun Content() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -42,7 +46,7 @@ fun SplashScreen(navController: NavController) {
 
 // Preview-only version without navigation
 @Composable
-fun SplashScreenPreviewContent() {
+private fun SplashScreenPreviewContent() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
