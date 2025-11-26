@@ -41,9 +41,9 @@ import androidx.compose.ui.graphics.ColorFilter
 @Composable
 fun ThemeSwitcher(
     modifier: Modifier = Modifier,
+    currentTheme: ThemeState = ThemeManager.themeState,
     onThemeChanged: (() -> Unit)? = null
 ) {
-    val currentTheme = ThemeManager.themeState
     var expanded by remember { mutableStateOf(false) }
 
     Box(
