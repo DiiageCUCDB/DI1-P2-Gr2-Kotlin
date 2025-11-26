@@ -16,7 +16,7 @@ fun CustomTitle(
     Text(
         text = text,
         style = MaterialTheme.typography.displayLarge,
-        fontSize = 52.sp,
+        fontSize = 40.sp,
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center
     )
