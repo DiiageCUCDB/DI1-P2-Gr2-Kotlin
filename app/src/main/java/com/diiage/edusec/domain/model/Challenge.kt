@@ -7,10 +7,3 @@ data class Challenge(
     val difficulty: Int,
     val isGuildChallenge: Boolean
 )
-
-data class ChallengesResult(
-    val challenges: List<Challenge>,
-    val totalChallenges: Int,
-    val totalPages: Int,
-    val currentPage: Int
-)

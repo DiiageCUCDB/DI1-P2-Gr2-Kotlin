@@ -116,8 +116,8 @@ private fun ChallengesContent(
                     description = challenge.description,
                     date = LocalDate.now().plusDays(challenge.id.hashCode() % 30L),
                     difficulty = when (challenge.difficulty) {
-                        1, 2 -> "Facile"
-                        3 -> "Normal"
+                        1 -> "Facile"
+                        2 -> "Normal"
                         else -> "Difficile"
                     },
                     isEquipe = challenge.isGuildChallenge,
