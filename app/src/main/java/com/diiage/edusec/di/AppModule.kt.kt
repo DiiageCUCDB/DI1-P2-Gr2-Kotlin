@@ -25,6 +25,7 @@ val appModule = module {
     single<ChallengeRepository> { ChallengeRepositoryImpl(get() ) }
     single { ChallengeAPI(get()) }
 
+
     // Add other dependencies here as needed
     // single { YourRepository() }
     // factory { YourUseCase() } // new instance each time

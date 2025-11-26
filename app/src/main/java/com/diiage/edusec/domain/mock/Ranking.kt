@@ -2,7 +2,7 @@ package com.diiage.edusec.domain.mock
 
 import com.diiage.edusec.domain.model.Rank
 
-fun mockRankingUsers(): List<Rank> = List(10) { index ->
+fun mockRankingUsers(): List<Rank> = List(20) { index ->
     Rank(
         rank = index + 1,
         name = "User ${index + 1}",
@@ -10,7 +10,7 @@ fun mockRankingUsers(): List<Rank> = List(10) { index ->
     )
 }
 
-fun mockRankingTeams(): List<Rank> = List(10) { index ->
+fun mockRankingTeams(): List<Rank> = List(20) { index ->
     Rank(
         rank = index + 1,
         name = "Team ${index + 1}",

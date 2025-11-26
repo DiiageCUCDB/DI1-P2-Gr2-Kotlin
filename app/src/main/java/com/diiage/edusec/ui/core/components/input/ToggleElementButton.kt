@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 fun ToggleElementButton(
     valueA: String,
     valueB: String,
-    currentValue: String,
-    onValueChange: (String) -> Unit
+    isPlayerListDisplayed: Boolean,
+    onValueChange: (Boolean) -> Unit
 ) {
-    val isASelected = currentValue == valueA
+    val isASelected = isPlayerListDisplayed == true
 
     // Couleurs animées pour chaque segment
     val colorA by animateColorAsState(
@@ -55,7 +55,7 @@ fun ToggleElementButton(
                 .weight(1f)
                 .fillMaxHeight()
                 .background(colorA)
-                .clickable { onValueChange(valueA) },
+                .clickable { onValueChange(true) },
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -70,7 +70,7 @@ fun ToggleElementButton(
                 .weight(1f)
                 .fillMaxHeight()
                 .background(colorB)
-                .clickable { onValueChange(valueB) },
+                .clickable { onValueChange(false) },
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -84,12 +84,12 @@ fun ToggleElementButton(
 @Preview(showBackground = true)
 @Composable
 fun ToggleElementButtonPreview() {
-    var value by remember { mutableStateOf("Utilisateur") }
+    var value by remember { mutableStateOf(true) }
 
     ToggleElementButton(
         valueA = "Utilisateur",
         valueB = "Équipe",
-        currentValue = value,
+        isPlayerListDisplayed = value,
         onValueChange = { value = it }
     )
 }
