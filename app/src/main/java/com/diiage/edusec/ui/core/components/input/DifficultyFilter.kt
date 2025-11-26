@@ -63,7 +63,7 @@ fun DifficultyFilter(
                     borderColor = if (selectedDifficulties.contains(difficulty)) difficulty.color
                     else MaterialTheme.colorScheme.outline,
                     selectedBorderColor = difficulty.color
-                )
+                ),
             )
         }
     }
