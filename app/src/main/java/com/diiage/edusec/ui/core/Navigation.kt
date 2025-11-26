@@ -19,11 +19,9 @@ import androidx.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.diiage.edusec.domain.usecase.QuizService
-import com.diiage.edusec.domain.usecase.QuizUiState
 import com.diiage.edusec.ui.screens.challenges.ChallengesScreen
-import com.diiage.edusec.ui.screens.quiz.QuizResultScreen
-import com.diiage.edusec.ui.screens.quiz.QuizScreen
+import com.diiage.edusec.ui.screens.challenges.quiz.quizResult.QuizResultScreen
+import com.diiage.edusec.ui.screens.challenges.quiz.QuizScreen
 import com.diiage.edusec.ui.screens.guild.GuildScreen
 import com.diiage.edusec.ui.screens.home.HomeScreen
 import com.diiage.edusec.ui.screens.login.LoginScreen
@@ -103,20 +101,6 @@ fun EdusecNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val quizService = remember { QuizService() }
-
-    var uiState by remember {
-        mutableStateOf(
-            QuizUiState(
-                currentQuestion = null,
-                currentIndex = 0,
-                totalQuestions = 0,
-                isFinished = false,
-                score = 0
-            )
-        )
-    }
-
     NavHost(
         navController = navController,
         startDestination = Destination.Splash.route,
@@ -137,26 +121,10 @@ fun EdusecNavHost(
         composable(Destination.Quiz()) { backStackEntry ->
             val challengeId = backStackEntry.arguments?.getString("id") ?: return@composable
 
-            LaunchedEffect(challengeId) {
-                quizService.startQuiz(challengeId)
-                uiState = quizService.getState()
-            }
-
             QuizScreen(
-                questionIndex = uiState.currentIndex,
-                totalQuestions = uiState.totalQuestions,
-                questionText = uiState.currentQuestion?.questionText ?: "",
-                onAnswerSelected = { isYes ->
-                    val newState = quizService.answer(isYes)
-                    uiState = newState
-
-                    if (newState.isFinished && newState.totalQuestions > 0) {
-                        // Use the fixed helper function
-                        navController.navigateToQuizResult(
-                            score = newState.score,
-                            total = newState.totalQuestions
-                        )
-                    }
+                challengeId = challengeId,
+                onQuizFinished = { score, total ->
+                    navController.navigateToQuizResult(score, total)
                 }
             )
         }
@@ -168,8 +136,7 @@ fun EdusecNavHost(
             QuizResultScreen(
                 navController = navController,
                 score = score,
-                total = total,
-                pointsEarned = score * 10
+                total = total
             )
         }
     }

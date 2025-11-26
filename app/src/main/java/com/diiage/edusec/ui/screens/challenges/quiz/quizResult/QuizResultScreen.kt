@@ -1,4 +1,4 @@
-package com.diiage.edusec.ui.screens.quiz
+package com.diiage.edusec.ui.screens.challenges.quiz.quizResult
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,23 +15,48 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.diiage.edusec.ui.core.components.input.ButtonVariant
-import com.diiage.edusec.ui.core.components.input.PrimaryButton
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.diiage.edusec.R
+import com.diiage.edusec.ui.core.components.input.ButtonVariant
+import com.diiage.edusec.ui.core.components.input.PrimaryButton
 import com.diiage.edusec.ui.core.theme.EduSecTheme
 
 @Composable
 fun QuizResultScreen(
+    navController: NavController,
+    score: Int,
+    total: Int,
+    viewModel: QuizResultViewModel = viewModel()
+) {
+    LaunchedEffect(score, total) {
+        viewModel.init(score, total)
+    }
+
+    val state by viewModel.state.collectAsState()
+
+    QuizResultContent(
+        navController = navController,
+        score = state.score,
+        total = state.total,
+        pointsEarned = state.pointsEarned
+    )
+}
+
+@Composable
+fun QuizResultContent(
     navController: NavController,
     score: Int,
     total: Int,
@@ -137,9 +162,9 @@ fun QuizResultScreen(
 @Composable
 fun PreviewQuizResultScreen() {
     EduSecTheme {
-        val navController = rememberNavController()  // Fake navController pour la preview
+        val navController = rememberNavController()
 
-        QuizResultScreen(
+        QuizResultContent(
             navController = navController,
             score = 12,
             total = 80,

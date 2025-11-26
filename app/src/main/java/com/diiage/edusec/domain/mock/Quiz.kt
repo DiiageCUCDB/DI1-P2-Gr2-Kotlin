@@ -5,7 +5,6 @@ import com.diiage.edusec.domain.model.QuizAnswer
 import com.diiage.edusec.domain.model.QuizQuestion
 import kotlin.random.Random
 
-// Pool de questions type "cyber" (réutilisées pour générer les mocks)
 private val cyberQuestionsPool = listOf(
     "Doit-on verrouiller son poste lorsqu’on quitte son bureau ?",
     "Faut-il vérifier l’adresse de l’expéditeur avant de cliquer sur un lien ?",
