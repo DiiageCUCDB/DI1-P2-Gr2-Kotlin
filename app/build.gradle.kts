@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.diiage.edusec"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.diiage.edusec"
@@ -38,7 +38,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11" // Compatible with Compose BOM 2023.08.00
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
 }
 
@@ -53,9 +53,15 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.foundation)
 
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
+
+    // Koin for Dependency Injection
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
