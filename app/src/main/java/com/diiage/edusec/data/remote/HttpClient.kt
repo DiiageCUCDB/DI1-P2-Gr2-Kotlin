@@ -17,7 +17,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 fun createHttpClient(
     baseUrl: String,
