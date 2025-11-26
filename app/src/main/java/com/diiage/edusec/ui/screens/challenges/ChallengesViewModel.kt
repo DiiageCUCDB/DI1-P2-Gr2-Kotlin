@@ -24,7 +24,6 @@ interface ChallengesContracts {
         data class DifficultySelected(val difficulty: DifficultyLevel) : UiAction
         data class ChallengeClicked(val challengeId: String) : UiAction
         object ResetFilters : UiAction
-        object LoadMore : UiAction
     }
 
     sealed interface Event {
@@ -51,13 +50,12 @@ class ChallengesViewModel(
             is ChallengesContracts.UiAction.DifficultySelected -> toggleDifficulty(action.difficulty)
             is ChallengesContracts.UiAction.ChallengeClicked -> navigateToQuiz(action.challengeId)
             is ChallengesContracts.UiAction.ResetFilters -> resetFilters()
-            is ChallengesContracts.UiAction.LoadMore -> loadMoreChallenges()
         }
     }
 
     private fun loadChallenges() {
         collectData(
-            source = { challengeRepository.getChallenges() }
+            source = { challengeRepository.getAllChallenges() }
         ) {
             onSuccess { challenges ->
                 updateState {
@@ -80,23 +78,6 @@ class ChallengesViewModel(
                         filteredChallenges = emptyList(),
                         isLoading = false,
                         error = error.message ?: "Erreur lors du chargement des défis"
-                    )
-                }
-            }
-        }
-    }
-
-    private fun loadMoreChallenges() {
-        fetchData(
-            source = { challengeRepository.loadMore() }
-        ) {
-            onSuccess {
-                // After loading more, the flow from getChallenges() should emit the updated list
-            }
-            onFailure { error ->
-                updateState {
-                    copy(
-                        error = "Erreur lors du chargement supplémentaire: ${error.message}"
                     )
                 }
             }
@@ -156,21 +137,7 @@ class ChallengesViewModel(
     }
 
     private fun navigateToQuiz(challengeId: String) {
-        // Start the challenge before navigating
-        fetchData(
-            source = { challengeRepository.startChallenge(challengeId) }
-        ) {
-            onSuccess {
-                sendEvent(ChallengesContracts.Event.NavigateToQuiz(challengeId))
-            }
-            onFailure { error ->
-                updateState {
-                    copy(
-                        error = "Erreur lors du démarrage du défi: ${error.message}"
-                    )
-                }
-            }
-        }
+        sendEvent(ChallengesContracts.Event.NavigateToQuiz(challengeId))
     }
 
     private fun filterChallenges(
@@ -196,8 +163,8 @@ class ChallengesViewModel(
         } else {
             searchFiltered.filter { challenge ->
                 val challengeDifficultyLevel = when (challenge.difficulty) {
-                    1, 2 -> DifficultyLevel.EASY
-                    3 -> DifficultyLevel.MEDIUM
+                    1 -> DifficultyLevel.EASY
+                    2 -> DifficultyLevel.MEDIUM
                     else -> DifficultyLevel.HARD
                 }
                 selectedDifficulties.contains(challengeDifficultyLevel)
