@@ -5,6 +5,20 @@ import com.diiage.edusec.ui.core.Destination
 import com.diiage.edusec.ui.core.ViewModel
 import kotlinx.coroutines.delay
 
+interface SplashContracts {
+    data class UiState(
+        val isLoading: Boolean = true
+    )
+
+    sealed interface UiAction {
+        object SplashCompleted : UiAction
+    }
+
+    sealed interface Event {
+        object NavigateTo : Event
+    }
+}
+
 class SplashViewModel(
     application: Application
 ) : ViewModel<SplashContracts.UiState>(
@@ -19,7 +33,7 @@ class SplashViewModel(
 
     fun handleAction(action: SplashContracts.UiAction) {
         when (action) {
-            SplashContracts.UiAction.SplashCompleted -> navigateToLogin()
+            SplashContracts.UiAction.SplashCompleted -> navigateTo()
         }
     }
 
@@ -41,7 +55,7 @@ class SplashViewModel(
         )
     }
 
-    private fun navigateToLogin() {
+    private fun navigateTo() {
         sendEvent(Destination.Login)
     }
 }
