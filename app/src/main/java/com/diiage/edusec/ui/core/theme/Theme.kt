@@ -57,10 +57,10 @@ val DarkColorScheme = darkColorScheme(
     tertiaryContainer = Sky800,
     onTertiaryContainer = Sky200,
 
-    background = Color(0xFF121212),
+    background = Neutral900,
     onBackground = Neutral100,
 
-    surface = Neutral900,
+    surface = Neutral700,
     onSurface = Neutral100,
 
     surfaceVariant = Neutral800,

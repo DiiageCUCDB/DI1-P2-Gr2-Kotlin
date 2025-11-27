@@ -1,4 +1,4 @@
-package com.diiage.edusec.ui.screens.challenges.quiz
+package com.diiage.edusec.ui.screens.quiz
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -22,8 +22,8 @@ import androidx.navigation.navArgument
 import com.diiage.edusec.domain.usecase.QuizService
 import com.diiage.edusec.domain.usecase.QuizUiState
 import com.diiage.edusec.ui.screens.challenges.ChallengesScreen
-import com.diiage.edusec.ui.screens.challenges.quiz.QuizResultScreen
-import com.diiage.edusec.ui.screens.challenges.quiz.QuizScreen
+import com.diiage.edusec.ui.screens.quiz.QuizResultScreen
+import com.diiage.edusec.ui.screens.quiz.QuizScreen
 import com.diiage.edusec.ui.screens.guild.GuildScreen
 import com.diiage.edusec.ui.screens.home.HomeScreen
 import com.diiage.edusec.ui.screens.login.LoginScreen

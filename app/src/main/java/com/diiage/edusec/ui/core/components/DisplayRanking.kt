@@ -2,6 +2,7 @@ package com.diiage.edusec.ui.core.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,9 +22,7 @@ import kotlin.collections.forEach
 
 @Composable
 fun DisplayRanking(
-    isUsers: Boolean = false,
-    users: List<Rank>,
-    teams: List<Rank>,
+    listRank: List<Rank>,
     modifier: Modifier = Modifier
 ) {
     val isLoading = false
@@ -43,22 +42,13 @@ fun DisplayRanking(
         Column(
             modifier = modifier.verticalScroll(rememberScrollState())
         ) {
-            if (isUsers) {
-                users.forEach { user ->
-                    ScoreRow(
-                        rank = user.rank,
-                        name = user.name,
-                        score = user.score,
-                    )
-                }
-            } else {
-                teams.forEach { team ->
-                    ScoreRow(
-                        rank = team.rank,
-                        name = team.name,
-                        score = team.score,
-                    )
-                }
+            listRank.forEach { entity ->
+                ScoreRow(
+                    rank = entity.rank,
+                    name = entity.name,
+                    score = entity.score,
+                )
+                Spacer(modifier = Modifier.size(7.dp))
             }
         }
     }
@@ -71,9 +61,7 @@ fun DisplayRankingUsersPreview() {
     val teams = mockRankingTeams()
 
     DisplayRanking(
-        isUsers = true,
-        users = users,
-        teams = teams,
+        listRank = users,
         modifier = Modifier.Companion
             .fillMaxSize()
             .padding(16.dp)
