@@ -67,17 +67,17 @@ private fun Content(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Accessibility Setting
-                SettingRow(
-                    title = "Accessibilité :",
-                    content = {
-                        PrimarySecondaryToggle(
-                            isPrimarySelected = state.isAccessibilityMode,
-                            onToggle = { enabled ->
-                                handleAction(SettingsContracts.UiAction.AccessibilityModeToggled(enabled))
-                            }
-                        )
-                    }
-                )
+                //SettingRow(
+                    //title = "Accessibilité :",
+                    //content = {
+                        //PrimarySecondaryToggle(
+                            //isPrimarySelected = state.isAccessibilityMode,
+                            //onToggle = { enabled ->
+                                //handleAction(SettingsContracts.UiAction.AccessibilityModeToggled(enabled))
+                            //}
+                        //)
+                    //}
+                //)
             }
         }
     }
