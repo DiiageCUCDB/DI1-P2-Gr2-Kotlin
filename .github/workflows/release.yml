@@ -55,25 +55,12 @@ jobs:
           fi
         fi
 
-    - name: Verify APK Signature
+    - name: Create GitHub Release
       if: steps.find_apk.outputs.APK_FOUND == 'true'
-      run: |
-        echo "=== Vérification de la signature ==="
-        # Trouver apksigner dans les build-tools
-        APKSIGNER_PATH=$(find ${ANDROID_HOME}/build-tools -name "apksigner" | head -1)
-        if [ -n "$APKSIGNER_PATH" ]; then
-          $APKSIGNER_PATH verify --print-certs "${{ steps.find_apk.outputs.APK_PATH }}" && \
-          echo "✅ APK signé avec le certificat debug Android" || \
-          echo "⚠️ Problème avec la signature"
-        else
-          echo "ℹ️ apksigner non trouvé, signature non vérifiée"
-        fi
-
-    - name: Upload APK to GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        files: ${{ steps.find_apk.outputs.APK_PATH }}
-        draft: false
+        tag_name: build-${{ github.sha }}
+        name: "Build ${{ github.sha }}"
         body: |
           ## APK Android Debug
           
@@ -90,6 +77,9 @@ jobs:
           3. Installez l'application
           
           ⚠️ **Note:** Cette version utilise un certificat de debug et ne peut pas être publiée sur le Play Store.
+        files: ${{ steps.find_apk.outputs.APK_PATH }}
+        draft: false
+        prerelease: true
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
