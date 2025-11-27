@@ -101,7 +101,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: "lts/*"
-        cache: 'npm'
+        # Remove cache since we don't have package-lock.json in Android project
 
     - name: Install semantic-release and plugins
       run: |
@@ -112,16 +112,9 @@ jobs:
           @semantic-release/github \
           conventional-changelog-conventionalcommits
 
-    - name: Create release with APK
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create release configuration
       run: |
-        # Copy APK to a predictable location for release
-        mkdir -p release-assets
-        cp "${{ steps.find_apk.outputs.APK_PATH }}" "release-assets/${{ steps.find_apk.outputs.APK_NAME }}"
-        
-        # Create release configuration
-        cat > .releaserc.json << EOF
+        cat > .releaserc.json << 'EOF'
         {
           "branches": ["main"],
           "plugins": [
@@ -142,7 +135,7 @@ jobs:
             [
               "@semantic-release/git",
               {
-                "assets": ["CHANGELOG.md", "package.json"],
+                "assets": ["CHANGELOG.md"],
                 "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
               }
             ],
@@ -151,7 +144,7 @@ jobs:
               {
                 "assets": [
                   {
-                    "path": "release-assets/${{ steps.find_apk.outputs.APK_NAME }}",
+                    "path": "${{ steps.find_apk.outputs.APK_PATH }}",
                     "label": "Android APK (${nextRelease.version})"
                   }
                 ]
@@ -160,11 +153,20 @@ jobs:
           ]
         }
         EOF
+
+    - name: Run semantic release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Copy APK to ensure it's available for release
+        mkdir -p release-assets
+        cp "${{ steps.find_apk.outputs.APK_PATH }}" "release-assets/${{ steps.find_apk.outputs.APK_NAME }}"
         
-        # Run semantic release
+        echo "Running semantic release..."
         npx semantic-release
 
     - name: Upload APK as workflow artifact
+      if: steps.find_apk.outputs.APK_FOUND == 'true'
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
@@ -177,3 +179,5 @@ jobs:
         echo "❌ Build or release failed"
         echo "APK search results:"
         find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+        echo "Build directory structure:"
+        find app/build -type d 2>/dev/null | head -20 || echo "No build directory found"
