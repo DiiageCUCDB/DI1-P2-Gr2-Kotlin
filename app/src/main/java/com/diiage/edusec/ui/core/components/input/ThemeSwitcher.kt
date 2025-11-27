@@ -52,7 +52,7 @@ fun ThemeSwitcher(
         // Dropdown trigger
         Surface(
             modifier = Modifier
-                .clip(CircleShape)
+                .clip(RoundedCornerShape(8.dp))
                 .clickable { expanded = true },
             color = MaterialTheme.colorScheme.primary
         ) {
@@ -96,7 +96,7 @@ fun ThemeSwitcher(
             onDismissRequest = { expanded = false },
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primary)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(8.dp))
         ) {
             // Light theme option
             DropdownMenuItem(

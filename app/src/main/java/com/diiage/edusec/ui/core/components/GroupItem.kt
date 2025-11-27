@@ -38,7 +38,7 @@ fun GroupItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(8.dp))
             .background(BlueDiiage)
             .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 12.dp)
