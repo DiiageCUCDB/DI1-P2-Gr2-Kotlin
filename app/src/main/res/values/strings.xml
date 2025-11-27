@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">edusec</string>
+    <string name="challenges_card_easy">Facile</string>
 </resources>
