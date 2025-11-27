@@ -1,0 +1,179 @@
+name: 🚀 Build and Release Android APK
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  packages: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Build Steps
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Required for semantic-release
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Cache Android build
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.android/build-cache
+          app/build
+        key: ${{ runner.os }}-android-${{ hashFiles('**/build.gradle*', '**/gradle.properties', '**/settings.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-android-
+
+    - name: Cache Kotlin
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.kotlin/cache
+          ~/.konan
+        key: ${{ runner.os }}-kotlin-${{ hashFiles('**/*.kt', '**/*.kts') }}
+        restore-keys: |
+          ${{ runner.os }}-kotlin-
+
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+
+    - name: Build APK
+      run: ./gradlew assembleRelease --build-cache
+
+    - name: Find APK file
+      id: find_apk
+      run: |
+        echo "=== Searching for APK files ==="
+        find . -name "*.apk" -type f 2>/dev/null | head -20 || echo "No APK files found"
+        
+        # Try to find the release APK
+        if [ -f "app/build/outputs/apk/release/app-release.apk" ]; then
+          echo "APK_PATH=app/build/outputs/apk/release/app-release.apk" >> $GITHUB_OUTPUT
+          echo "APK_FOUND=true" >> $GITHUB_OUTPUT
+          echo "APK_NAME=app-release.apk" >> $GITHUB_OUTPUT
+        elif [ -f "app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
+          echo "APK_PATH=app/build/outputs/apk/release/app-release-unsigned.apk" >> $GITHUB_OUTPUT
+          echo "APK_FOUND=true" >> $GITHUB_OUTPUT
+          echo "APK_NAME=app-release-unsigned.apk" >> $GITHUB_OUTPUT
+        else
+          FOUND_APK=$(find . -name "*.apk" -type f | head -1)
+          if [ -n "$FOUND_APK" ]; then
+            echo "APK_PATH=$FOUND_APK" >> $GITHUB_OUTPUT
+            echo "APK_FOUND=true" >> $GITHUB_OUTPUT
+            echo "APK_NAME=$(basename $FOUND_APK)" >> $GITHUB_OUTPUT
+          else
+            echo "APK_FOUND=false" >> $GITHUB_OUTPUT
+            echo "❌ No APK files were found after build!"
+            find app/build -type d 2>/dev/null | head -20
+            exit 1
+          fi
+        fi
+
+    # Release Steps
+    - name: Setup Node.js for semantic-release
+      uses: actions/setup-node@v4
+      with:
+        node-version: "lts/*"
+        cache: 'npm'
+
+    - name: Install semantic-release and plugins
+      run: |
+        npm install --save-dev semantic-release \
+          @semantic-release/changelog \
+          @semantic-release/git \
+          @semantic-release/exec \
+          @semantic-release/github \
+          conventional-changelog-conventionalcommits
+
+    - name: Create release with APK
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Copy APK to a predictable location for release
+        mkdir -p release-assets
+        cp "${{ steps.find_apk.outputs.APK_PATH }}" "release-assets/${{ steps.find_apk.outputs.APK_NAME }}"
+        
+        # Create release configuration
+        cat > .releaserc.json << EOF
+        {
+          "branches": ["main"],
+          "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            [
+              "@semantic-release/changelog",
+              {
+                "changelogFile": "CHANGELOG.md"
+              }
+            ],
+            [
+              "@semantic-release/exec",
+              {
+                "prepareCmd": "echo 'Preparing release with APK'"
+              }
+            ],
+            [
+              "@semantic-release/git",
+              {
+                "assets": ["CHANGELOG.md", "package.json"],
+                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+              }
+            ],
+            [
+              "@semantic-release/github",
+              {
+                "assets": [
+                  {
+                    "path": "release-assets/${{ steps.find_apk.outputs.APK_NAME }}",
+                    "label": "Android APK (${nextRelease.version})"
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+        EOF
+        
+        # Run semantic release
+        npx semantic-release
+
+    - name: Upload APK as workflow artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-apk
+        path: ${{ steps.find_apk.outputs.APK_PATH }}
+        retention-days: 30
+
+    - name: Cleanup on failure
+      if: failure()
+      run: |
+        echo "❌ Build or release failed"
+        echo "APK search results:"
+        find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
