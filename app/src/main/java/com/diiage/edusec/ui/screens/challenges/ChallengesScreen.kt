@@ -9,12 +9,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.diiage.edusec.R
 import com.diiage.edusec.ui.core.components.ChallengeCard
 import com.diiage.edusec.ui.core.components.CustomTitle
 import com.diiage.edusec.ui.core.components.Screen
@@ -116,7 +118,8 @@ private fun ChallengesContent(
                     description = challenge.description,
                     date = LocalDate.now().plusDays(challenge.id.hashCode() % 30L),
                     difficulty = when (challenge.difficulty) {
-                        1 -> "Facile"
+//                        1 -> context.getString(R.string.challenges_card_easy)
+                        1 -> stringResource(R.string.challenges_card_easy)
                         2 -> "Normal"
                         else -> "Difficile"
                     },

@@ -20,11 +20,12 @@ internal class LoginAPI(private val client: HttpClient) {
      * @return An [ApiResponse] containing [LoginResponseDto] with user creation details.
      * @throws HttpException if the request fails or if the status code is not [HttpStatusCode.OK].
      */
-    suspend fun createLogin(username: String): ApiResponse<LoginResponseDto> = client
-        .post("login/create") {
-            contentType(ContentType.Application.Json)
-            setBody(LoginRequest(username))
-        }
-        .accept(HttpStatusCode.OK, HttpStatusCode.Created)
-        .body()
+    suspend fun createLogin(username: String): ApiResponse<LoginResponseDto> = client.createLogin(username)
 }
+private suspend fun HttpClient.createLogin(username: String): ApiResponse<LoginResponseDto> =
+    post("login/create") {
+        contentType(ContentType.Application.Json)
+        setBody(LoginRequest(username))
+    }
+    .accept(HttpStatusCode.OK, HttpStatusCode.Created)
+    .body()
