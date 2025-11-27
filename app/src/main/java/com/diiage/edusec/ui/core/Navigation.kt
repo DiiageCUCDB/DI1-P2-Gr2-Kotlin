@@ -22,6 +22,7 @@ import androidx.navigation.navArgument
 import com.diiage.edusec.domain.usecase.QuizService
 import com.diiage.edusec.domain.usecase.QuizUiState
 import com.diiage.edusec.ui.screens.challenges.ChallengesScreen
+import com.diiage.edusec.ui.screens.guild.GuildDetailsScreen
 import com.diiage.edusec.ui.screens.quiz.QuizResultScreen
 import com.diiage.edusec.ui.screens.quiz.QuizScreen
 import com.diiage.edusec.ui.screens.guild.GuildScreen
@@ -59,6 +60,12 @@ sealed class Destination(val route: String, val arguments: List<NamedNavArgument
                 navArgument("total") { type = NavType.IntType }
             )
         )
+
+    class GuildDetails(guildId: String = "{id}"):
+            Destination(
+                route = "guildDetails/$guildId",
+                arguments = listOf(navArgument("id") { type = NavType.StringType })
+            )
 }
 
 // Extension for NavGraphBuilder
@@ -172,5 +179,17 @@ fun EdusecNavHost(
                 pointsEarned = score * 10
             )
         }
+
+        composable(
+            destination = Destination.GuildDetails()
+        ) { backStackEntry ->
+
+            GuildDetailsScreen(
+                navController = navController,
+                id = backStackEntry.arguments?.getString("id") ?: "0"
+            )
+
+        }
     }
 }
+

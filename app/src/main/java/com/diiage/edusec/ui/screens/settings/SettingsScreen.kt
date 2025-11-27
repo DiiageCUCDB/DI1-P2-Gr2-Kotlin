@@ -59,25 +59,25 @@ fun SettingsScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                ) {
-                    Text(
-                        text = "Accessibilité :",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontSize = 24.sp,
-                        modifier = Modifier.alignByBaseline()
-                    )
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    PrimarySecondaryToggle(
-                        isPrimarySelected = false,
-                        onToggle = {}
-                    )
-                }
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(vertical = 8.dp),
+//                ) {
+//                    Text(
+//                        text = "Accessibilité :",
+//                        style = MaterialTheme.typography.headlineMedium,
+//                        fontSize = 24.sp,
+//                        modifier = Modifier.alignByBaseline()
+//                    )
+//
+//                    Spacer(modifier = Modifier.width(16.dp))
+//
+//                    PrimarySecondaryToggle(
+//                        isPrimarySelected = false,
+//                        onToggle = {}
+//                    )
+//                }
 
             }
         }
