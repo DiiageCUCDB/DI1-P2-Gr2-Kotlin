@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.0.0...v1.1.0) (2025-11-27)
+
+
+### Features
+
+* Change workflow to build and release Debug APK ([ee1c04e](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/ee1c04e66edd9557f9d8bc8cd861bc9946cd0874))
+* Enhance release workflow for signed APK builds ([d1ea5b0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/d1ea5b030568e535ab53b20222d62853dba8a101))
+* Update release workflow to create GitHub release ([9420341](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/9420341fee647e0af0e95ad33782a919e9c26f87))
+
 # 1.0.0 (2025-11-27)
 
 
