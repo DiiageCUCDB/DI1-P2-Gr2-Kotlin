@@ -1,5 +1,6 @@
 package com.diiage.edusec.ui.screens.ranking
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -41,7 +42,6 @@ fun RankingScreen(navController: NavController) {
         )
     }
 }
-
 @Composable
 private fun Content(
     navController: NavController,
@@ -78,7 +78,7 @@ fun RankingScreenPreview() {
         state = RankingContracts.UiState(
             isLoading = false,
             errorMessage = null,
-            displayedList = mockRankingUsers(),
+            //displayedList = mockRankingUsers(),
             isPlayerListDisplayed = true
         ),
         handleAction = {}

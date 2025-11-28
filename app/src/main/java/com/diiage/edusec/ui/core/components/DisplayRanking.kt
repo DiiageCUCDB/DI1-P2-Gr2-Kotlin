@@ -60,10 +60,10 @@ fun DisplayRankingUsersPreview() {
     val users = mockRankingUsers()
     val teams = mockRankingTeams()
 
-    DisplayRanking(
-        listRank = users,
-        modifier = Modifier.Companion
-            .fillMaxSize()
-            .padding(16.dp)
-    )
+//    DisplayRanking(
+//        listRank = users,
+//        modifier = Modifier.Companion
+//            .fillMaxSize()
+//            .padding(16.dp)
+//    )
 }
