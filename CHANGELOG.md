@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.2.0...v1.3.0) (2025-11-28)
+
+
+### Features
+
+* Update RMAPI_URL to new API endpoint ([8471aaa](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/8471aaaaf1e13a8cc14cc1c63235a3e99ed7402e))
+
 # [1.2.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.1.0...v1.2.0) (2025-11-28)
 
 
