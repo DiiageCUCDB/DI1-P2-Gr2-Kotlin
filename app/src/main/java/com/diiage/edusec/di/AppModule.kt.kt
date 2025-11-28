@@ -2,6 +2,7 @@ package com.diiage.edusec.di
 
 import com.diiage.edusec.data.remote.ChallengeAPI
 import com.diiage.edusec.data.remote.LoginAPI
+import com.diiage.edusec.data.remote.RankingAPI
 import com.diiage.edusec.data.remote.createHttpClient
 import com.diiage.edusec.data.repository.*
 import com.diiage.edusec.domain.repository.*
@@ -24,6 +25,10 @@ val appModule = module {
 
     single<ChallengeRepository> { ChallengeRepositoryImpl(get() ) }
     single { ChallengeAPI(get()) }
+
+    single<RankingRepository> { RankingRespositoryImpl(get()) }
+    single { RankingAPI(get()) }
+
 
 
     // Add other dependencies here as needed
