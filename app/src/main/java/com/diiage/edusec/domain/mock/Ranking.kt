@@ -1,6 +1,6 @@
 package com.diiage.edusec.domain.mock
 
-import com.diiage.edusec.domain.model.Rank
+import com.diiage.edusec.data.dto.Rank
 
 fun mockRankingUsers(): List<Rank> = List(20) { index ->
     Rank(
