@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.1.0...v1.2.0) (2025-11-28)
+
+
+### Features
+
+* Implement Ranking screen with MVVM and toggle ([17c26ea](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/17c26ea9d3355f4311ee3e10ced1ebb93802c93c))
+
 # [1.1.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.0.0...v1.1.0) (2025-11-27)
 
 
