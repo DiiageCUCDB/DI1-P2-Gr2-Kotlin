@@ -9,7 +9,7 @@ import com.diiage.edusec.domain.repository.*
 import io.ktor.client.HttpClient
 import org.koin.dsl.module
 
-private const val RMAPI_URL = "http://20.19.90.200:8000/api/"
+private const val RMAPI_URL = "http://98.66.234.231:8000/api/"
 
 val appModule = module {
 
