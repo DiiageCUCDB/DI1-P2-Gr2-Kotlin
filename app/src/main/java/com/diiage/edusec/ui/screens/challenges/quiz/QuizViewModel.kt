@@ -1,14 +1,11 @@
 package com.diiage.edusec.ui.screens.challenges.quiz
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.diiage.edusec.domain.mock.mockQuestionsByChallenge
+import android.app.Application
 import com.diiage.edusec.domain.model.QuizQuestion
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import com.diiage.edusec.domain.model.ChallengeDetails
+import com.diiage.edusec.domain.repository.QuizRepository
+import com.diiage.edusec.ui.core.ViewModel
+import org.koin.core.component.inject
 
 data class QuizState(
     val isLoading: Boolean = true,
@@ -23,40 +20,57 @@ data class QuizState(
         get() = questions.getOrNull(currentIndex)
 }
 
-class QuizViewModel : ViewModel() {
+class QuizViewModel(
+    application: Application
+) : ViewModel<QuizState>(
+    initialState = QuizState(),
+    application = application
+) {
 
-    private val _state = MutableStateFlow(QuizState())
-    val state: StateFlow<QuizState> = _state.asStateFlow()
+    private val quizRepository: QuizRepository by inject()
 
     fun startQuiz(challengeId: String) {
-        viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, error = null) }
+        updateState { copy(isLoading = true, error = null) }
 
-            val questions = mockQuestionsByChallenge[challengeId] ?: emptyList()
+        collectData(
+            source = { quizRepository.getChallengeDetails(challengeId) } // Flow<ChallengeDetails>
+        ) {
+            onSuccess { details: ChallengeDetails ->
+                val questions = details.questions
 
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    questions = questions,
-                    currentIndex = 0,
-                    totalQuestions = questions.size,
-                    answers = emptyList(),
-                    isFinished = questions.isEmpty()
-                )
+                updateState {
+                    copy(
+                        isLoading = false,
+                        questions = questions,
+                        currentIndex = 0,
+                        totalQuestions = questions.size,
+                        answers = emptyList(),
+                        isFinished = questions.isEmpty()
+                    )
+                }
+            }
+
+            onFailure { error ->
+                updateState {
+                    copy(
+                        isLoading = false,
+                        error = error.message ?: "Erreur lors du chargement du quiz"
+                    )
+                }
             }
         }
     }
 
     fun answer(isYes: Boolean) {
-        val current = _state.value
+        val current = state.value
         if (current.isFinished || current.currentQuestion == null) return
 
         val newAnswers = current.answers + isYes
         val nextIndex = current.currentIndex + 1
         val finished = nextIndex >= current.questions.size
 
-        _state.update {
-            it.copy(
+        updateState {
+            copy(
                 answers = newAnswers,
                 currentIndex = nextIndex,
                 isFinished = finished
@@ -64,6 +78,5 @@ class QuizViewModel : ViewModel() {
         }
     }
 
-    fun getFinalScore(): Int = _state.value.answers.count { it }
-
+    fun getFinalScore(): Int = state.value.answers.count { it }
 }
