@@ -28,10 +28,11 @@ data class ChallengesResult(
  */
 @Serializable
 data class ChallengeApiResponse(
-    val result: ResultWrapper? = null,
-    val results: List<ResultItem> = emptyList(),
+    val result: ChallengeDetails? = null,
+    val results: List<ChallengeDetails> = emptyList(),
     @SerialName("generationTime_ms")
     val generationTimeMs: Double? = null,
+
     val success: Boolean,
     val message: String? = null
 )

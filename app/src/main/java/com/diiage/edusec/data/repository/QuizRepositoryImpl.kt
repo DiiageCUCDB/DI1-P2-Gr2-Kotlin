@@ -23,9 +23,10 @@ internal class QuizRepositoryImpl(
             throw Exception("Failed to fetch challenge details: ${response.message}")
         }
 
-        val dto = response.result?.challenge
-            ?: response.results.firstOrNull()?.challenge
+        val dto = response.result
+            ?: response.results.firstOrNull()
             ?: throw Exception("Challenge details missing in API response")
+
 
         val domain = DomainChallengeDetails(
             id = dto.id,
