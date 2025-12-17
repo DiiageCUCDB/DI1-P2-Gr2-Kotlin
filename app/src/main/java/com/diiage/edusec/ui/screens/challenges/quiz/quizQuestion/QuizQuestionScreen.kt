@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.diiage.edusec.domain.model.QuizAnswer
 import com.diiage.edusec.ui.core.components.input.ButtonVariant
 import com.diiage.edusec.ui.core.components.input.PrimaryButton
 import com.diiage.edusec.ui.core.theme.EduSecTheme
@@ -35,7 +36,8 @@ fun QuizQuestionScreen(
     questionIndex: Int,
     totalQuestions: Int,
     questionText: String,
-    onAnswerSelected: (Boolean) -> Unit,
+    answers: List<QuizAnswer>,
+    onAnswerSelected: (String) -> Unit,
     viewModel: QuizQuestionViewModel = viewModel()
 ) {
     LaunchedEffect(questionIndex, totalQuestions, questionText) {
@@ -52,6 +54,7 @@ fun QuizQuestionScreen(
         questionIndex = state.questionIndex,
         totalQuestions = state.totalQuestions,
         questionText = state.questionText,
+        answers = answers,
         onAnswerSelected = onAnswerSelected
     )
 }
@@ -61,8 +64,12 @@ fun QuizQuestionContent(
     questionIndex: Int,
     totalQuestions: Int,
     questionText: String,
-    onAnswerSelected: (Boolean) -> Unit
+    answers: List<QuizAnswer>,
+    onAnswerSelected: (String) -> Unit
 ) {
+    val a1 = answers.getOrNull(0)
+    val a2 = answers.getOrNull(1)
+
     Scaffold(
         bottomBar = {
             Column(
@@ -71,19 +78,26 @@ fun QuizQuestionContent(
                     .padding(horizontal = 24.dp)
                     .padding(bottom = 190.dp),
             ) {
-                PrimaryButton(
-                    onClick = { onAnswerSelected(true) },
-                    text = "Oui",
-                    variant = ButtonVariant.SECONDARY
-                )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                if (a1 != null) {
+                    PrimaryButton(
+                        onClick = { onAnswerSelected(a1.id) },
+                        text = a1.answerText,
+                        variant = ButtonVariant.SECONDARY
+                    )
+                }
 
-                PrimaryButton(
-                    onClick = { onAnswerSelected(false) },
-                    text = "Non",
-                    variant = ButtonVariant.PRIMARY
-                )
+                if (a1 != null && a2 != null) {
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
+
+                if (a2 != null) {
+                    PrimaryButton(
+                        onClick = { onAnswerSelected(a2.id) },
+                        text = a2.answerText,
+                        variant = ButtonVariant.PRIMARY
+                    )
+                }
             }
         }
     ) { paddingValues ->
@@ -120,9 +134,7 @@ fun QuizQuestionContent(
                     modifier = Modifier
                         .height(60.dp)
                         .width(3.dp)
-                        .graphicsLayer {
-                            rotationZ = 45f
-                        },
+                        .graphicsLayer { rotationZ = 45f },
                     color = MaterialTheme.colorScheme.primary
                 )
 
@@ -163,9 +175,13 @@ fun QuizQuestionContent(
 fun PreviewQuizQuestionContent() {
     EduSecTheme {
         QuizQuestionContent(
-            questionIndex = 13,
-            totalQuestions = 20,
-            questionText = "Doit-on verrouiller notre poste lorsqu’on quitte son bureau ?",
+            questionIndex = 1,
+            totalQuestions = 2,
+            questionText = "Question…",
+            answers = listOf(
+                QuizAnswer(id = "a1", answerText = "Oui"),
+                QuizAnswer(id = "a2", answerText = "Non")
+            ),
             onAnswerSelected = {}
         )
     }

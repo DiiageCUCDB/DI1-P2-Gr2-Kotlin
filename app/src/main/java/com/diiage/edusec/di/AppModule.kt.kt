@@ -19,12 +19,16 @@ val appModule = module {
     }
 
     // Single instance (singleton) of LoginService
-    single<LoginRepository> { LoginRepositoryImpl(get()) }
+    single<LoginRepository> { LoginRepositoryImpl(get(), get()) }
     single { LoginAPI(get()) }
+
+    single<UserSessionManager> { UserSessionManagerImpl() }
+
 
     single<ChallengeRepository> { ChallengeRepositoryImpl(get() ) }
     single { ChallengeAPI(get()) }
-    single<QuizRepository> { QuizRepositoryImpl(get()) }
+    single { ChallengeAPI.ResponsesAPI(get()) }
+    single<QuizRepository> { QuizRepositoryImpl(get(), get()) }
 
 
     // Add other dependencies here as needed

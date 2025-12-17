@@ -1,5 +1,6 @@
 package com.diiage.edusec.data.repository
 
+import com.diiage.edusec.data.dto.PostResponsesRequestDto
 import com.diiage.edusec.data.remote.ChallengeAPI
 import com.diiage.edusec.domain.repository.QuizRepository
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +10,8 @@ import com.diiage.edusec.domain.model.QuizAnswer
 import com.diiage.edusec.domain.model.QuizQuestion
 
 internal class QuizRepositoryImpl(
-    private val challengeAPI: ChallengeAPI
+    private val challengeAPI: ChallengeAPI,
+    private val responsesAPI: ChallengeAPI.ResponsesAPI // ✅ injecte aussi l’API /responses
 ) : QuizRepository {
 
     private val cache = mutableMapOf<String, DomainChallengeDetails>()
@@ -26,7 +28,6 @@ internal class QuizRepositoryImpl(
         val dto = response.result
             ?: response.results.firstOrNull()
             ?: throw Exception("Challenge details missing in API response")
-
 
         val domain = DomainChallengeDetails(
             id = dto.id,
@@ -50,5 +51,30 @@ internal class QuizRepositoryImpl(
 
         cache[id] = domain
         emit(domain)
+    }
+
+    override suspend fun postQuizResponses(
+        userId: String,
+        answerIds: List<String>
+    ): Flow<Int> = flow {
+        if (userId.isBlank()) throw IllegalArgumentException("userId is blank")
+        if (answerIds.isEmpty()) throw IllegalArgumentException("answerIds is empty")
+
+        val response = responsesAPI.postResponses(
+            PostResponsesRequestDto(
+                userId = userId,
+                answerIds = answerIds
+            )
+        )
+
+        if (!response.success) {
+            throw Exception("Failed to post responses: ${response.message}")
+        }
+
+        val score = response.result?.score
+            ?: response.result.score
+            ?: throw Exception("Score missing in API response")
+
+        emit(score)
     }
 }
