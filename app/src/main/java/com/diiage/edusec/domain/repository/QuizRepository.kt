@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuizRepository {
     suspend fun getChallengeDetails(id: String): Flow<ChallengeDetails>
+    suspend fun postQuizResponses(userId: String, answerIds: List<String>): Flow<Int>
+
 }
