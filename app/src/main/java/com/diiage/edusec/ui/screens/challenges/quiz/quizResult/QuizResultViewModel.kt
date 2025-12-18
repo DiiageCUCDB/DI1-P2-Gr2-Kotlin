@@ -22,7 +22,7 @@ class QuizResultViewModel : ViewModel() {
             it.copy(
                 score = score,
                 total = total,
-                pointsEarned = score * 10
+                pointsEarned = score
             )
         }
     }
