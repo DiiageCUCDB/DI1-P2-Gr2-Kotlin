@@ -1,4 +1,4 @@
-package com.diiage.edusec.ui.screens.quiz
+package com.diiage.edusec.ui.screens.challenges.quiz.quizQuestion
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -22,12 +25,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.diiage.edusec.ui.core.components.input.ButtonVariant
 import com.diiage.edusec.ui.core.components.input.PrimaryButton
 import com.diiage.edusec.ui.core.theme.EduSecTheme
 
 @Composable
-fun QuizScreen(
+fun QuizQuestionScreen(
+    questionIndex: Int,
+    totalQuestions: Int,
+    questionText: String,
+    onAnswerSelected: (Boolean) -> Unit,
+    viewModel: QuizQuestionViewModel = viewModel()
+) {
+    LaunchedEffect(questionIndex, totalQuestions, questionText) {
+        viewModel.setQuestion(
+            index = questionIndex,
+            total = totalQuestions,
+            text = questionText
+        )
+    }
+
+    val state by viewModel.state.collectAsState()
+
+    QuizQuestionContent(
+        questionIndex = state.questionIndex,
+        totalQuestions = state.totalQuestions,
+        questionText = state.questionText,
+        onAnswerSelected = onAnswerSelected
+    )
+}
+
+@Composable
+fun QuizQuestionContent(
     questionIndex: Int,
     totalQuestions: Int,
     questionText: String,
@@ -130,9 +160,9 @@ fun QuizScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewQuizScreen() {
+fun PreviewQuizQuestionContent() {
     EduSecTheme {
-        QuizScreen(
+        QuizQuestionContent(
             questionIndex = 13,
             totalQuestions = 20,
             questionText = "Doit-on verrouiller notre poste lorsqu’on quitte son bureau ?",

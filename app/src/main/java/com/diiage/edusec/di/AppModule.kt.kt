@@ -9,7 +9,7 @@ import com.diiage.edusec.domain.repository.*
 import io.ktor.client.HttpClient
 import org.koin.dsl.module
 
-private const val RMAPI_URL = "http://10.4.0.194:8000/api/"
+private const val RMAPI_URL = "http://98.66.234.231:8000/api/"
 
 val appModule = module {
 
@@ -25,6 +25,7 @@ val appModule = module {
 
     single<ChallengeRepository> { ChallengeRepositoryImpl(get() ) }
     single { ChallengeAPI(get()) }
+    single<QuizRepository> { QuizRepositoryImpl(get()) }
 
     single<RankingRepository> { RankingRespositoryImpl(get()) }
     single { RankingAPI(get()) }
