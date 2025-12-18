@@ -84,16 +84,6 @@ data class PostResponsesRequestDto(
 )
 
 @Serializable
-data class PostResponsesApiResponse(
-    val result: ScoreDto? = null,
-    val results: List<ScoreDto> = emptyList(),
-    @SerialName("generationTime_ms")
-    val generationTimeMs: Double? = null,
-    val success: Boolean,
-    val message: String? = null
-)
-
-@Serializable
 data class ScoreDto(
     val score: Int
 )

@@ -3,8 +3,8 @@ package com.diiage.edusec.data.remote
 import com.diiage.edusec.data.dto.ApiResponse
 import com.diiage.edusec.data.dto.ChallengeApiResponse
 import com.diiage.edusec.data.dto.ChallengesResult
-import com.diiage.edusec.data.dto.PostResponsesApiResponse
 import com.diiage.edusec.data.dto.PostResponsesRequestDto
+import com.diiage.edusec.data.dto.ScoreDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -51,13 +51,13 @@ internal class ChallengeAPI(private val client: HttpClient) {
 
     internal class ResponsesAPI(private val client: HttpClient) {
 
-        suspend fun postResponses(request: PostResponsesRequestDto): PostResponsesApiResponse =
+        suspend fun postResponses(request: PostResponsesRequestDto): ApiResponse<ScoreDto> =
             client
                 .post("responses") {
                     contentType(ContentType.Application.Json)
                     setBody(request)
                 }
-                .accept(HttpStatusCode.OK)
+                .accept(HttpStatusCode.Created)
                 .body()
     }
 }
