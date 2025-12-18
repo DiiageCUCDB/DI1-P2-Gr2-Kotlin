@@ -7,3 +7,11 @@ data class Challenge(
     val difficulty: Int,
     val isGuildChallenge: Boolean
 )
+data class ChallengeDetails(
+    val id: String,
+    val name: String,
+    val description: String,
+    val difficulty: Int,
+    val isGuildChallenge: Boolean,
+    val questions: List<QuizQuestion>
+)

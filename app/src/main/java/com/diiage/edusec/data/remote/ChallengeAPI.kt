@@ -1,11 +1,18 @@
 package com.diiage.edusec.data.remote
 
 import com.diiage.edusec.data.dto.ApiResponse
+import com.diiage.edusec.data.dto.ChallengeApiResponse
 import com.diiage.edusec.data.dto.ChallengesResult
+import com.diiage.edusec.data.dto.PostResponsesApiResponse
+import com.diiage.edusec.data.dto.PostResponsesRequestDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 
 /**
  * Remote data source for challenges operations.
@@ -35,4 +42,22 @@ internal class ChallengeAPI(private val client: HttpClient) {
             }
             .accept(HttpStatusCode.OK)
             .body()
+
+    suspend fun getChallengeDetails(id: String): ChallengeApiResponse =
+        client
+            .get("challenges/$id")
+            .accept(HttpStatusCode.OK)
+            .body()
+
+    internal class ResponsesAPI(private val client: HttpClient) {
+
+        suspend fun postResponses(request: PostResponsesRequestDto): PostResponsesApiResponse =
+            client
+                .post("responses") {
+                    contentType(ContentType.Application.Json)
+                    setBody(request)
+                }
+                .accept(HttpStatusCode.OK)
+                .body()
+    }
 }

@@ -25,6 +25,7 @@ val appModule = module {
 
     single<ChallengeRepository> { ChallengeRepositoryImpl(get() ) }
     single { ChallengeAPI(get()) }
+    single<QuizRepository> { QuizRepositoryImpl(get()) }
 
     single<RankingRepository> { RankingRespositoryImpl(get()) }
     single { RankingAPI(get()) }

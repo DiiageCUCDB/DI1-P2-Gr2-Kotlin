@@ -7,6 +7,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.diiage.edusec.R
+import com.diiage.edusec.ui.core.Destination
 import com.diiage.edusec.ui.core.components.ChallengeCard
 import com.diiage.edusec.ui.core.components.CustomTitle
 import com.diiage.edusec.ui.core.components.Screen
@@ -24,12 +26,26 @@ import com.diiage.edusec.ui.core.components.input.DifficultyFilter
 import com.diiage.edusec.ui.core.components.input.DifficultyLevel
 import com.diiage.edusec.ui.core.components.input.SearchBar
 import com.diiage.edusec.ui.core.components.layout.MainScaffold
+import com.diiage.edusec.ui.core.navigate
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 
 @Composable
 fun ChallengesScreen(navController: NavController) {
+    val vm: ChallengesViewModel = viewModel()
+
+    LaunchedEffect(Unit) {
+        vm.events.collectLatest { event ->
+            when (event) {
+                is ChallengesContracts.Event.NavigateToQuiz -> {
+                    navController.navigate(Destination.Quiz(event.challengeId))
+                }
+            }
+        }
+    }
+
     Screen(
-        viewModel = viewModel<ChallengesViewModel>(),
+        viewModel = vm,
         navController = navController
     ) { state, viewModel ->
         Content(
@@ -125,7 +141,9 @@ private fun ChallengesContent(
                     },
                     isEquipe = challenge.isGuildChallenge,
                     onClick = {
-                        handleAction(ChallengesContracts.UiAction.ChallengeClicked(challenge.id))
+                        handleAction(
+                            ChallengesContracts.UiAction.ChallengeClicked(challenge.id)
+                        )
                     }
                 )
             }
