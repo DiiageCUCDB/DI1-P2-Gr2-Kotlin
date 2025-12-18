@@ -2,6 +2,7 @@ package com.diiage.edusec.ui.screens.login
 
 import android.app.Application
 import com.diiage.edusec.domain.repository.LoginRepository
+import com.diiage.edusec.domain.repository.UserSessionManager
 import com.diiage.edusec.ui.core.Destination
 import com.diiage.edusec.ui.core.ViewModel
 import org.koin.core.component.inject
@@ -32,6 +33,7 @@ class LoginViewModel(
     application = application
 ) {
     private val loginService: LoginRepository by inject()
+    private val userSessionManager: UserSessionManager by inject()
 
     fun handleAction(action: LoginContracts.UiAction) {
         when (action) {
