@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.7.0...v1.8.0) (2025-12-18)
+
+
+### Features
+
+* add adaptive launcher icons and background color resources ([a2605bb](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/a2605bb52d677b8ca37a97aed828634809a8601c))
+
 # [1.7.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.6.0...v1.7.0) (2025-12-18)
 
 
