@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.6.0...v1.7.0) (2025-12-18)
+
+
+### Features
+
+* **quiz:** update pointsEarned calculation in QuizResultViewModel ([73400ed](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/73400edf613c1edd8dded9359a70281c6d0c7d05))
+
 # [1.6.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.5.0...v1.6.0) (2025-12-18)
 
 
