@@ -47,15 +47,6 @@ fun HomeScreen(navController: NavController) {
                     onThemeChanged = { themeUpdateTrigger++ }
                 )
 
-                ExtraLargeSpacer()
-
-                PrimaryButton(
-                    onClick = {
-                        navController.navigate("components_test")
-                    },
-                    text = "Tester les Composants"
-                )
-
                 MediumSpacer()
 
                 PrimaryButton(
