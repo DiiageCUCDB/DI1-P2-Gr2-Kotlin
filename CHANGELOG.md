@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.4.0...v1.5.0) (2025-12-18)
+
+
+### Features
+
+* Remove empty README.md file ([17d1fe0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/commit/17d1fe010fd1c9e7f2bef2eeac8585b1ab165cb1))
+
 # [1.4.0](https://github.com/DiiageCUCDB/DI1-P2-Gr2-Kotlin/compare/v1.3.0...v1.4.0) (2025-12-15)
 
 
